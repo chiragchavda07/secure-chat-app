@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const BACKEND_URL = 'http://localhost:3000';
-
+// const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = 'https://secure-chat-app-production-bb99.up.railway.app';
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      ws.current = new WebSocket('ws://localhost:3000?token=' + token);
+      ws.current = new WebSocket('wss://secure-chat-app-production-bb99.up.railway.app?token=' + token);
 
       ws.current.onopen = () => {
         console.log('WebSocket connected');
