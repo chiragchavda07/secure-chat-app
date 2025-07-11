@@ -6,7 +6,10 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [inviteCode, setInviteCode] = useState('');
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(() => {
+    // Load token from localStorage on app start
+    return localStorage.getItem('token');
+  });
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const ws = useRef(null);
@@ -54,13 +57,14 @@ function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
-    if (res.ok) {
-      const data = await res.json();
-      setToken(data.token);
-    } else {
-      const data = await res.json();
-      alert('Login failed: ' + data.error);
-    }
+      if (res.ok) {
+        const data = await res.json();
+        setToken(data.token);
+        localStorage.setItem('token', data.token); // Persist token in localStorage
+      } else {
+        const data = await res.json();
+        alert('Login failed: ' + data.error);
+      }
   };
 
   const sendMessage = () => {
